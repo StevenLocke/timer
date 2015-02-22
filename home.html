@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <!--<link rel="stylesheet" href="css/bootstrap.css"/>-->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+    <!--<link rel="stylesheet" href="css/hello.css"/>-->
+    <meta charset="UTF-8">
+    <title>Timer!</title>
+</head>
+<body>
+<div id="inputDiv">
+    <input type="number" id="inputVal" placeholder="in minutes">
+    <button class="btn btn-default" id="relativeTimerStartButton">Start Relative Timer</button>
+
+    <br>
+
+    <input type="datetime" id="inputDateVal" placeholder="hh:mm:ss, 24hour">
+    <button class="btn btn-default" id="exactTimerStartButton">Start Exact Timer</button>
+
+</div>
+<div id="waitingDiv">
+    <span id="timerSpan"></span>
+</div>
+
+<script src="js/home.js"></script>
+
+</body>
+</html>
