@@ -48,10 +48,9 @@ function startRelativeTimer() {
 }
 
 function startExactTimer() {
-    console.log('Starting the exact timer!');
 
-    // parse a time in hh:mm:ss format
     function parseTime(input) {
+        // parse a time in hh:mm:ss format
         var parts = input.split(':');
         var now = new Date();
         now.setHours(parts[0]);
@@ -76,7 +75,7 @@ function startExactTimer() {
         displayTime(time);
     }
     else
-        console.log("Error parsing input from exact.");
+        console.log("Error parsing input for exact.");
 }
 
 function displayTime(dateTime) {
@@ -91,17 +90,28 @@ function displayTime(dateTime) {
         if (now < dateTime) {
             var difference = dateTime - now;
             difference = new Date(difference);
-            var myString = "Remaining time: ";
+            var myString = "";
+            if (difference.getHours() > 0) {
+                myString += difference.getHours();
+                myString += " hours, ";
+            }
             myString += difference.getMinutes();
             myString += " minutes, ";
             myString += difference.getSeconds();
-            myString += " seconds.";
+            myString += " seconds";
 
-            timerSpan.innerHTML = myString;
+            document.title = myString;
+            timerSpan.innerHTML = "Remaining time: " + myString;
             now.setSeconds(now.getSeconds() + 1);
         }
         else {
-            alert("Timer's up!");
+            var message = document.getElementById('alertMessage');
+            if (message.value != "") {
+                alert(message.value);
+                message.value = "";
+            }
+            else
+                alert("Timer's up!");
             clearInterval(timer);
             document.getElementById('inputDiv').style.display = 'block';
             document.getElementById('waitingDiv').style.display = 'none';
