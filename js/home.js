@@ -32,7 +32,7 @@ function clearInputs() {
 function startRelativeTimer() {
     var minuteInput = parseFloat(document.getElementById('inputVal').value);
 
-    if(minuteInput > 0 && minuteInput < 100)
+    if(minuteInput > 0 && minuteInput <= 100)
     {
         var time = new Date();
         time.setMinutes(time.getMinutes() + minuteInput);
@@ -91,13 +91,13 @@ function displayTime(dateTime) {
             var difference = dateTime - now;
             difference = new Date(difference);
             var myString = "";
-            if (difference.getHours() > 0) {
-                myString += difference.getHours();
+            if (difference.getUTCHours() > 0) {
+                myString += difference.getUTCHours();
                 myString += " hours, ";
             }
-            myString += difference.getMinutes();
+            myString += difference.getUTCMinutes();
             myString += " minutes, ";
-            myString += difference.getSeconds();
+            myString += difference.getUTCSeconds();
             myString += " seconds";
 
             document.title = myString;
