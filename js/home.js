@@ -113,6 +113,7 @@ function displayTime(dateTime) {
             else
                 alert("Timer's up!");
             clearInterval(timer);
+            document.title = "Timer!";
             document.getElementById('inputDiv').style.display = 'block';
             document.getElementById('waitingDiv').style.display = 'none';
         }
