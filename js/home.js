@@ -32,7 +32,7 @@ function clearInputs() {
 function startRelativeTimer() {
     var minuteInput = parseFloat(document.getElementById('inputVal').value);
 
-    if(minuteInput > 0 && minuteInput <= 100)
+    if(minuteInput > 0 && minuteInput <= 1440)
     {
         var time = new Date();
         time.setMinutes(time.getMinutes() + minuteInput);
@@ -44,7 +44,7 @@ function startRelativeTimer() {
             console.log("Error parsing input from relative.");
     }
     else
-        console.log('Put a real number in, between 0 and 100');
+        console.log('Put a real number in, greater than 0 and less than 1440 (a day).');
 }
 
 function startExactTimer() {
@@ -101,7 +101,7 @@ function displayTime(dateTime) {
             myString += " seconds";
 
             document.title = myString;
-            timerSpan.innerHTML = "Remaining time: " + myString;
+            timerSpan.innerText = "Remaining time: " + myString;
             now.setSeconds(now.getSeconds() + 1);
         }
         else {
