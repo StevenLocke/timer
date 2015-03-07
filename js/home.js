@@ -101,7 +101,7 @@ function displayTime(dateTime) {
             myString += " seconds";
 
             document.title = myString;
-            timerSpan.innerText = "Remaining time: " + myString;
+            timerSpan.innerHTML = "Remaining time: " + myString;
             now.setSeconds(now.getSeconds() + 1);
         }
         else {
