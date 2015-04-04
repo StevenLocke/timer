@@ -14,10 +14,28 @@ window.addEventListener('load', function() {
         clearInputs();
     });
 
+    var relativeInput = document.getElementById('inputVal');
+    relativeInput.addEventListener('keypress', function(e) {
+        var key = e.which || e.keyCode;
+        if(key == 13) {
+            startRelativeTimer();
+            clearInputs();
+        }
+    });
+
     var exactStartButton = document.getElementById('exactTimerStartButton');
     exactStartButton.addEventListener('click', function() {
         startExactTimer();
         clearInputs();
+    });
+
+    var exactInput = document.getElementById('inputDateVal');
+    exactInput.addEventListener('keypress', function(e) {
+        var key = e.which || e.keyCode;
+        if(key == 13) {
+            startExactTimer();
+            clearInputs();
+        }
     });
 });
 
