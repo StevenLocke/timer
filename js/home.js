@@ -101,8 +101,15 @@ function displayTime(dateTime) {
     document.getElementById('waitingDiv').style.display = 'block';
 
     var timerSpan = document.getElementById('timerSpan');
+    var messageSpan = document.getElementById('messageSpan');
+    messageSpan.innerHTML = "";
 
     var now = new Date();
+
+    var message = document.getElementById('alertMessage');
+    if (message.value != "") {
+        messageSpan.innerHTML = message.value;
+    }
 
     var timer = setInterval(function() {
         if (now < dateTime) {
@@ -123,7 +130,6 @@ function displayTime(dateTime) {
             now.setSeconds(now.getSeconds() + 1);
         }
         else {
-            var message = document.getElementById('alertMessage');
             if (message.value != "") {
                 alert(message.value);
                 message.value = "";
