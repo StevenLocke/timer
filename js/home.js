@@ -131,15 +131,31 @@ function displayTime(dateTime) {
         }
         else {
             if (message.value != "") {
+                playAudio('beepAudio');
                 alert(message.value);
+                stopAudio('beepAudio');
                 message.value = "";
             }
-            else
+            else {
+                playAudio('beepAudio');
                 alert("Timer's up!");
+                stopAudio('beepAudio');
+            }
             clearInterval(timer);
             document.title = "Timer!";
             document.getElementById('inputDiv').style.display = 'block';
             document.getElementById('waitingDiv').style.display = 'none';
         }
     }, 1000);
+}
+
+function playAudio(id) {
+    var sound = document.getElementById(id);
+    sound.play();
+}
+
+function stopAudio(id) {
+    var sound = document.getElementById(id);
+    sound.pause();
+    sound.currentTime = 0;
 }
