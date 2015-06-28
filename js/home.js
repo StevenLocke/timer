@@ -111,22 +111,26 @@ function displayTime(dateTime) {
         messageSpan.innerHTML = message.value;
     }
 
+    var endTimeSpan = document.getElementById('endTimeSpan');
+    endTimeSpan.innerHTML = "End time: ";
+    endTimeSpan.innerHTML += (dateTime.getHours() > 12 ? dateTime.getHours() - 12 : dateTime.getHours()) + ":" + dateTime.getMinutes() + ":" + dateTime.getSeconds() + (dateTime.getHours() > 12 ? " PM" : " AM");
+
     var timer = setInterval(function() {
         if (now < dateTime) {
             var difference = dateTime - now;
             difference = new Date(difference);
-            var myString = "";
+            var remainingTimeString = "";
             if (difference.getUTCHours() > 0) {
-                myString += difference.getUTCHours();
-                myString += " hours, ";
+                remainingTimeString += difference.getUTCHours();
+                remainingTimeString += " hours, ";
             }
-            myString += difference.getUTCMinutes();
-            myString += " minutes, ";
-            myString += difference.getUTCSeconds();
-            myString += " seconds";
+            remainingTimeString += difference.getUTCMinutes();
+            remainingTimeString += " minutes, ";
+            remainingTimeString += difference.getUTCSeconds();
+            remainingTimeString += " seconds";
 
-            document.title = myString;
-            timerSpan.innerHTML = "Remaining time: " + myString;
+            document.title = remainingTimeString;
+            timerSpan.innerHTML = "Remaining time: " + remainingTimeString;
             now.setSeconds(now.getSeconds() + 1);
         }
         else {
