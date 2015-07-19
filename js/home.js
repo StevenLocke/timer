@@ -53,7 +53,10 @@ function startRelativeTimer() {
     if(minuteInput > 0 && minuteInput <= 1440)
     {
         var time = new Date();
+        var seconds = minuteInput - Math.floor(minuteInput);
+
         time.setMinutes(time.getMinutes() + minuteInput);
+        time.setSeconds(time.getSeconds() + seconds*60);
 
         if (!(isNaN(time.getTime()))) {
             displayTime(time);
