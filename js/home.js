@@ -4,6 +4,8 @@
 
 "use strict";
 
+var timer;
+
 window.addEventListener('load', function() {
     document.getElementById('inputDiv').style.display = 'block';
     document.getElementById('waitingDiv').style.display = 'none';
@@ -36,6 +38,11 @@ window.addEventListener('load', function() {
             startExactTimer();
             clearInputs();
         }
+    });
+
+    var resetButton = document.getElementById('resetButton');
+    resetButton.addEventListener('click', function() {
+        resetTimer();
     });
 });
 
@@ -118,7 +125,7 @@ function displayTime(dateTime) {
     endTimeSpan.innerHTML = "End time: ";
     endTimeSpan.innerHTML += (dateTime.getHours() > 12 ? dateTime.getHours() - 12 : dateTime.getHours()) + ":" + dateTime.getMinutes() + ":" + dateTime.getSeconds() + (dateTime.getHours() > 12 ? " PM" : " AM");
 
-    var timer = setInterval(function() {
+    timer = setInterval(function() {
         if (now < dateTime) {
             var difference = dateTime - now;
             difference = new Date(difference);
@@ -148,12 +155,16 @@ function displayTime(dateTime) {
                 alert("Timer's up!");
                 stopAudio('beepAudio');
             }
-            clearInterval(timer);
-            document.title = "Timer!";
-            document.getElementById('inputDiv').style.display = 'block';
-            document.getElementById('waitingDiv').style.display = 'none';
+            resetTimer()
         }
     }, 1000);
+}
+
+function resetTimer() {
+    clearInterval(timer);
+    document.title = "Timer!";
+    document.getElementById('inputDiv').style.display = 'block';
+    document.getElementById('waitingDiv').style.display = 'none';
 }
 
 function playAudio(id) {
