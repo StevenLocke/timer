@@ -1,10 +1,11 @@
 /**
- * Created by The Almighty Steve on 2/21/2015.
+ * Created by Steven on 2/21/2015.
  */
 
 "use strict";
 
-var timer;
+var gTimer;
+var gCurrentAlarmTime;
 
 window.addEventListener('load', function() {
     document.getElementById('inputDiv').style.display = 'block';
@@ -40,9 +41,14 @@ window.addEventListener('load', function() {
         }
     });
 
-    var resetButton = document.getElementById('resetButton');
-    resetButton.addEventListener('click', function() {
+    var stopButton = document.getElementById('stopButton');
+    stopButton.addEventListener('click', function() {
         resetTimer();
+    });
+
+    var snoozeButton = document.getElementById('snoozeButton');
+    snoozeButton.addEventListener('click', function() {
+        snoozeTimer();
     });
 });
 
@@ -90,8 +96,6 @@ function startExactTimer() {
             now.setSeconds(parts[2]);
         else
             now.setSeconds(0);
-        // new Date(year, month [, day [, hours[, minutes[, seconds[, ms]]]]])
-        //return new Date(parts[0], parts[1]-1, parts[2]); // Note: months are 0-based
         return now;
     }
 
@@ -110,6 +114,8 @@ function displayTime(dateTime) {
     document.getElementById('inputDiv').style.display = 'none';
     document.getElementById('waitingDiv').style.display = 'block';
 
+    gCurrentAlarmTime = dateTime;
+
     var timerSpan = document.getElementById('timerSpan');
     var messageSpan = document.getElementById('messageSpan');
     messageSpan.innerHTML = "";
@@ -125,46 +131,70 @@ function displayTime(dateTime) {
     endTimeSpan.innerHTML = "End time: ";
     endTimeSpan.innerHTML += (dateTime.getHours() > 12 ? dateTime.getHours() - 12 : dateTime.getHours()) + ":" + dateTime.getMinutes() + ":" + dateTime.getSeconds() + (dateTime.getHours() > 12 ? " PM" : " AM");
 
-    timer = setInterval(function() {
+    gTimer = setInterval(function() {
         if (now < dateTime) {
             var difference = dateTime - now;
             difference = new Date(difference);
             var remainingTimeString = "";
+            var titleSting = "";
             if (difference.getUTCHours() > 0) {
                 remainingTimeString += difference.getUTCHours();
                 remainingTimeString += " hours, ";
+                titleSting += difference.getUTCHours();
+                titleSting += "h ";
             }
             remainingTimeString += difference.getUTCMinutes();
             remainingTimeString += " minutes, ";
+            titleSting += difference.getUTCMinutes();
+            titleSting += "m ";
+
             remainingTimeString += difference.getUTCSeconds();
             remainingTimeString += " seconds";
+            titleSting += difference.getUTCSeconds();
+            titleSting += "s";
 
-            document.title = remainingTimeString;
+            document.title = titleSting;
             timerSpan.innerHTML = "Remaining time: " + remainingTimeString;
             now.setSeconds(now.getSeconds() + 1);
         }
         else {
-            if (message.value != "") {
-                playAudio('beepAudio');
-                alert(message.value);
-                stopAudio('beepAudio');
-                message.value = "";
+            if (message.value != "")
+            {
+                document.title = message.value;
             }
-            else {
-                playAudio('beepAudio');
-                alert("Timer's up!");
-                stopAudio('beepAudio');
+            else
+            {
+                document.title = "Time!";
             }
-            resetTimer()
+
+            playAudio('beepAudio');
         }
     }, 1000);
 }
 
 function resetTimer() {
-    clearInterval(timer);
+    clearInterval(gTimer);
+    stopAudio('beepAudio');
+
+    var message = document.getElementById('alertMessage');
+    message.value = "";
+
     document.title = "Timer!";
     document.getElementById('inputDiv').style.display = 'block';
     document.getElementById('waitingDiv').style.display = 'none';
+}
+
+function snoozeTimer(minutes=5) {
+    clearInterval(gTimer);
+    stopAudio('beepAudio');
+
+    var newAlarm = new Date();
+    if (newAlarm < gCurrentAlarmTime)
+    {
+        newAlarm = gCurrentAlarmTime;
+    }
+    newAlarm.setMinutes(newAlarm.getMinutes() + minutes);
+    displayTime(newAlarm);
 }
 
 function playAudio(id) {
