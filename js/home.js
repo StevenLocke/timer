@@ -61,15 +61,39 @@ function clearInputs() {
 }
 
 function startRelativeTimer() {
-    var minuteInput = parseFloat(document.getElementById('inputVal').value);
+    var input = document.getElementById('inputVal').value;
 
-    if(minuteInput > 0 && minuteInput <= 1440)
+    //Match any number of digits, followed by either one or zero (a literal . or : followed by any number of digits)
+    var regEx = /^(\d*)(?:([\.:])(\d*))?$/;
+
+    var minutes = 0;
+    var seconds = 0;
+
+    if (regEx.test(input))
     {
-        var time = new Date();
-        var seconds = minuteInput - Math.floor(minuteInput);
+        var parsedInput = regEx.exec(input);
 
-        time.setMinutes(time.getMinutes() + minuteInput);
-        time.setSeconds(time.getSeconds() + seconds*60);
+        switch (parsedInput[2])
+        {
+            case ":":
+                seconds = parseInt(parsedInput[3]);
+                break;
+            case ".":
+                var temp = "0.";
+                temp += parsedInput[3];
+                console.log(temp);
+                seconds = parseFloat(temp) * 60;
+                break;
+            default:
+                break;
+        }
+
+        minutes = parseInt(parsedInput[1]);
+
+        var time = new Date();
+
+        time.setMinutes(time.getMinutes() + minutes);
+        time.setSeconds(time.getSeconds() + seconds);
 
         if (!(isNaN(time.getTime()))) {
             displayTime(time);
@@ -78,7 +102,8 @@ function startRelativeTimer() {
             console.log("Error parsing input from relative.");
     }
     else
-        console.log('Put a real number in, greater than 0 and less than 1440 (a day).');
+        console.log('Put a real number in! Accepts x.y as x minutes and 0.y * 60 seconds, ' +
+            'and x:y as x minutes and y seconds.');
 }
 
 function startExactTimer() {
