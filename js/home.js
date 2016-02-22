@@ -69,7 +69,7 @@ function startRelativeTimer() {
     var minutes = 0;
     var seconds = 0;
 
-    if (regEx.test(input))
+    if (input != "" && regEx.test(input))
     {
         var parsedInput = regEx.exec(input);
 
@@ -128,7 +128,7 @@ function startExactTimer() {
     var timeInput = (document.getElementById('inputDateVal').value);
     var time = parseTime(timeInput);
 
-    if (!(isNaN(time.getTime()))) {
+    if (timeInput != "" && !isNaN(time.getTime())) {
         displayTime(time);
     }
     else
