@@ -32,6 +32,13 @@ window.addEventListener('load', function() {
         clearInputs();
     });
 
+    var quickStartButton = document.getElementById('quickTimerStartButton');
+    quickStartButton.addEventListener('click', function() {
+        gCurrentAlarmTime = 0;
+        snoozeTimer();
+        clearInputs();
+    });
+
     var exactInput = document.getElementById('inputDateVal');
     exactInput.addEventListener('keypress', function(e) {
         var key = e.which || e.keyCode;
@@ -154,7 +161,9 @@ function displayTime(dateTime) {
 
     var endTimeSpan = document.getElementById('endTimeSpan');
     endTimeSpan.innerHTML = "End time: ";
-    endTimeSpan.innerHTML += (dateTime.getHours() > 12 ? dateTime.getHours() - 12 : dateTime.getHours()) + ":" + dateTime.getMinutes() + ":" + dateTime.getSeconds() + (dateTime.getHours() > 12 ? " PM" : " AM");
+    endTimeSpan.innerHTML += (dateTime.getHours() > 12 ? dateTime.getHours() - 12 : dateTime.getHours()) + ":";
+    endTimeSpan.innerHTML += padZeroes(dateTime.getMinutes()) + ":";
+    endTimeSpan.innerHTML += padZeroes(dateTime.getSeconds()) + (dateTime.getHours() > 12 ? " PM" : " AM");
 
     gTimer = setInterval(function() {
         if (now < dateTime) {
@@ -231,4 +240,11 @@ function stopAudio(id) {
     var sound = document.getElementById(id);
     sound.pause();
     sound.currentTime = 0;
+}
+
+function padZeroes(value) {
+    if (value < 10)
+        value = "0" + value;
+
+    return value
 }
