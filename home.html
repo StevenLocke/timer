@@ -26,10 +26,10 @@
 
     <form class="form-horizontal">
         <div class="col-sm-6">
-            <input type="number" min="0" class="form-control" id="inputVal" placeholder="Relative Time in Minutes">
+            <input class="form-control" id="relativeInputField" placeholder="Relative Time in Minutes">
         </div>
         <div class="col-sm-6">
-            <input type="datetime" class="form-control" id="inputDateVal" placeholder="Exact Time (HH:MM:SS, 24 Hours)">
+            <input class="form-control" id="exactInputField" placeholder="Exact Time (HH:MM:SS, 24 Hours)">
         </div>
 
         <div class="col-sm-6">
@@ -48,11 +48,14 @@
     <h1 id="messageSpan"></h1>
     <h1 id="timerSpan"></h1>
     <h1 id="endTimeSpan"></h1>
-    <div class="col-sm-6">
+    <div class="col-sm-4">
         <button type="button" class="btn btn-primary form-control" id="stopButton">Stop</button>
     </div>
-    <div class="col-sm-6">
+    <div class="col-sm-4">
         <button type="button" class="btn btn-primary form-control" id="snoozeButton">Snooze</button>
+    </div>
+    <div class="col-sm-4">
+        <button type="button" class="btn btn-primary form-control" id="pauseResumeButton">Pause</button>
     </div>
 </div>
 
