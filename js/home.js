@@ -7,6 +7,7 @@
 var gTimer;
 var gCurrentAlarmTime;
 var gRemainingTime;
+var gInitialTimeDifference;
 var gPaused = false;
 
 window.addEventListener('load', function() {
@@ -95,7 +96,6 @@ function startRelativeTimer() {
             case ".":
                 var temp = "0.";
                 temp += parsedInput[3];
-                console.log(temp);
                 seconds = parseFloat(temp) * 60;
                 break;
             default:
@@ -110,6 +110,7 @@ function startRelativeTimer() {
         time.setSeconds(time.getSeconds() + seconds);
 
         if (!(isNaN(time.getTime()))) {
+            gInitialTimeDifference = Math.abs((new Date()).getTime() - time.getTime());
             displayTime(time);
         }
         else
@@ -143,6 +144,7 @@ function startExactTimer() {
     var time = parseTime(timeInput);
 
     if (timeInput != "" && !isNaN(time.getTime())) {
+        gInitialTimeDifference = Math.abs((new Date()).getTime() - time.getTime());
         displayTime(time);
     }
     else
@@ -154,6 +156,7 @@ function displayTime(dateTime) {
     document.getElementById('waitingDiv').style.display = 'block';
 
     gCurrentAlarmTime = dateTime;
+    var now = new Date();
 
     var timerSpan = document.getElementById('timerSpan');
     var messageSpan = document.getElementById('messageSpan');
@@ -164,7 +167,6 @@ function displayTime(dateTime) {
         messageSpan.innerHTML = message.value;
     }
 
-    var now = new Date();
     var endTimeSpan = document.getElementById('endTimeSpan');
     endTimeSpan.innerHTML = "End time: ";
     endTimeSpan.innerHTML += (dateTime.getHours() > 12 ? dateTime.getHours() - 12 : dateTime.getHours()) + ":";
@@ -174,7 +176,7 @@ function displayTime(dateTime) {
     gTimer = setInterval(function() {
         if (!gPaused) {
             if (now < dateTime) {
-                var difference = dateTime - now;
+                var difference = dateTime.getTime() - now.getTime();
                 difference = new Date(difference);
                 var remainingTimeString = "";
                 var titleSting = "";
@@ -207,6 +209,15 @@ function displayTime(dateTime) {
                 }
 
                 playAudio('beepAudio');
+                dateTime = now;
+                if (document.getElementById("autoRepeatCheckBox").checked)
+                {
+                    clearInterval(gTimer);
+                    displayTime(new Date(now.getTime() + gInitialTimeDifference));
+                    setTimeout(function() {
+                        stopAudio('beepAudio');
+                    }, 2000);
+                }
             }
         }
         else {
@@ -225,6 +236,7 @@ function resetTimer() {
     clearInterval(gTimer);
     gPaused = false;
     document.getElementById('pauseResumeButton').innerHTML = "Pause";
+    document.getElementById('autoRepeatCheckBox').checked = false;
     stopAudio('beepAudio');
 
     var message = document.getElementById('alertMessage');
