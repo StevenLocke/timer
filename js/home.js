@@ -224,6 +224,7 @@ function displayTime(dateTime) {
 function resetTimer() {
     clearInterval(gTimer);
     gPaused = false;
+    document.getElementById('pauseResumeButton').innerHTML = "Pause";
     stopAudio('beepAudio');
 
     var message = document.getElementById('alertMessage');
