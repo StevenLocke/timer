@@ -38,6 +38,7 @@ window.addEventListener('load', function() {
     var quickStartButton = document.getElementById('quickTimerStartButton');
     quickStartButton.addEventListener('click', function() {
         gCurrentAlarmTime = 0;
+        gInitialTimeDifference = 5;
         snoozeTimer();
         clearInputs();
     });
