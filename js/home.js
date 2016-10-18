@@ -79,7 +79,7 @@ function clearInputs() {
 function startRelativeTimer() {
     var input = document.getElementById('relativeInputField').value;
 
-    //Match any number of digits, followed by either one or zero (a literal . or : followed by any number of digits)
+    //Match any number of digits, followed by either one or zero (a literal . or : followed by at least one digit)
     var regEx = /^(\d*)(?:([\.:])(\d+))?$/;
 
     var minutes = 0;
@@ -112,6 +112,7 @@ function startRelativeTimer() {
 
         if (!(isNaN(time.getTime()))) {
             gInitialTimeDifference = Math.abs((new Date()).getTime() - time.getTime());
+            gRemainingTime = gInitialTimeDifference;
             displayTime(time);
         }
         else
@@ -146,6 +147,7 @@ function startExactTimer() {
 
     if (timeInput != "" && !isNaN(time.getTime())) {
         gInitialTimeDifference = Math.abs((new Date()).getTime() - time.getTime());
+        gRemainingTime = gInitialTimeDifference;
         displayTime(time);
     }
     else
@@ -200,6 +202,7 @@ function displayTime(dateTime) {
                 document.title = titleSting;
                 timerSpan.innerHTML = "Remaining time: " + remainingTimeString;
                 now.setSeconds(now.getSeconds() + 1);
+                gRemainingTime -= 1000;
             }
             else {
                 if (message.value != "") {
@@ -215,10 +218,12 @@ function displayTime(dateTime) {
                 {
                     clearInterval(gTimer);
                     displayTime(new Date(now.getTime() + gInitialTimeDifference));
+                    gRemainingTime = gInitialTimeDifference;
                     setTimeout(function() {
                         stopAudio('beepAudio');
                     }, 2000);
                 }
+                gRemainingTime = 0;
             }
         }
         else {
@@ -258,6 +263,7 @@ function snoozeTimer(minutes) {
         newAlarm = gCurrentAlarmTime;
     }
     newAlarm.setMinutes(newAlarm.getMinutes() + minutes);
+    gRemainingTime += minutes * 60 * 1000 //Convert to ms
     displayTime(newAlarm);
 }
 
@@ -268,7 +274,6 @@ function pauseResumeTimer() {
     if (pauseResumeButton.innerHTML == "Pause") {
         gCurrentAlarmTime = (new Date()) + gRemainingTime;
     }
-
 }
 
 function playAudio(id) {
