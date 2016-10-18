@@ -38,8 +38,8 @@ window.addEventListener('load', function() {
     var quickStartButton = document.getElementById('quickTimerStartButton');
     quickStartButton.addEventListener('click', function() {
         gCurrentAlarmTime = 0;
-        gInitialTimeDifference = 5;
-        snoozeTimer();
+        gInitialTimeDifference = 300000; //5 minutes in milliseconds
+        snoozeTimer(5);
         clearInputs();
     });
 
@@ -248,7 +248,7 @@ function resetTimer() {
     document.getElementById('waitingDiv').style.display = 'none';
 }
 
-function snoozeTimer(minutes = 5) {
+function snoozeTimer(minutes) {
     clearInterval(gTimer);
     stopAudio('beepAudio');
 
