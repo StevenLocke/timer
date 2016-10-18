@@ -92,7 +92,7 @@ function startRelativeTimer() {
         switch (parsedInput[2])
         {
             case ":":
-                seconds = parseInt(parsedInput[3]);
+                seconds = parseInt(parsedInput[3]) || 0;
                 break;
             case ".":
                 var temp = "0.";
