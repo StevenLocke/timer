@@ -80,7 +80,7 @@ function startRelativeTimer() {
     var input = document.getElementById('relativeInputField').value;
 
     //Match any number of digits, followed by either one or zero (a literal . or : followed by any number of digits)
-    var regEx = /^(\d*)(?:([\.:])(\d*))?$/;
+    var regEx = /^(\d*)(?:([\.:])(\d+))?$/;
 
     var minutes = 0;
     var seconds = 0;
@@ -92,7 +92,7 @@ function startRelativeTimer() {
         switch (parsedInput[2])
         {
             case ":":
-                seconds = parseInt(parsedInput[3]) || 0;
+                seconds = parseInt(parsedInput[3]);
                 break;
             case ".":
                 var temp = "0.";
