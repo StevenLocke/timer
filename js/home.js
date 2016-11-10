@@ -207,9 +207,9 @@ function displayTime(dateTime) {
             }
             else {
                 document.getElementById('timerSpan').innerHTML = "Time's Up!";
-				document.getElementById("stopCol").className = "col-sm-6";
-				document.getElementById("snoozeCol").className = "col-sm-6";
-				document.getElementById("pauseCol").style.display = 'none';
+                document.getElementById("stopCol").className = "col-sm-6";
+                document.getElementById("snoozeCol").className = "col-sm-6";
+                document.getElementById("pauseCol").style.display = 'none';
                 if (message.value != "") {
                     document.title = message.value;
                 }
@@ -277,10 +277,10 @@ function snoozeTimer(minutes = 5) {
 
 
 function pauseResumeTimer() {
-	if (gRemainingTime == 0)
-	{
-		return;
-	}
+    if (gRemainingTime == 0)
+    {
+        return;
+    }
     gPaused = !gPaused;
     var pauseResumeButton = document.getElementById('pauseResumeButton');
     pauseResumeButton.innerHTML = pauseResumeButton.innerHTML == "Pause" ? "Resume" : "Pause";
