@@ -38,7 +38,8 @@ window.addEventListener('load', function() {
     var quickStartButton = document.getElementById('quickTimerStartButton');
     quickStartButton.addEventListener('click', function() {
         gCurrentAlarmTime = 0;
-        snoozeTimer();
+        gInitialTimeDifference = 300000; //5 minutes in milliseconds
+        snoozeTimer(5);
         clearInputs();
     });
 
@@ -58,7 +59,7 @@ window.addEventListener('load', function() {
 
     var snoozeButton = document.getElementById('snoozeButton');
     snoozeButton.addEventListener('click', function() {
-        snoozeTimer();
+        snoozeTimer(5);
     });
 
     var pauseResumeButton = document.getElementById('pauseResumeButton');
@@ -80,8 +81,8 @@ function clearInputs() {
 function startRelativeTimer() {
     var input = document.getElementById('relativeInputField').value;
 
-    //Match any number of digits, followed by either one or zero (a literal . or : followed by any number of digits)
-    var regEx = /^(\d*)(?:([\.:])(\d*))?$/;
+    //Match any number of digits, followed by either one or zero (a literal . or : followed by at least one digit)
+    var regEx = /^(\d*)(?:([\.:])(\d+))?$/;
 
     var minutes = 0;
     var seconds = 0;
@@ -113,6 +114,7 @@ function startRelativeTimer() {
 
         if (!(isNaN(time.getTime()))) {
             gInitialTimeDifference = Math.abs((new Date()).getTime() - time.getTime());
+            gRemainingTime = gInitialTimeDifference;
             displayTime(time);
         }
         else
@@ -149,6 +151,7 @@ function startExactTimer() {
 
     if (timeInput != "" && !isNaN(time.getTime())) {
         gInitialTimeDifference = Math.abs((new Date()).getTime() - time.getTime());
+        gRemainingTime = gInitialTimeDifference;
         displayTime(time);
     }
     else
@@ -204,6 +207,7 @@ function displayTime(dateTime) {
                 document.title = titleSting;
                 timerSpan.innerHTML = "Remaining time: " + remainingTimeString;
                 now.setSeconds(now.getSeconds() + 1);
+                gRemainingTime -= 1000;
             }
             else {
                 document.getElementById('timerSpan').innerHTML = "Time's Up!";
@@ -223,10 +227,12 @@ function displayTime(dateTime) {
                 {
                     clearInterval(gTimer);
                     displayTime(new Date(now.getTime() + gInitialTimeDifference));
+                    gRemainingTime = gInitialTimeDifference;
                     setTimeout(function() {
                         stopAudio('beepAudio');
                     }, 2000);
                 }
+                gRemainingTime = 0;
             }
         }
         else {
@@ -272,6 +278,7 @@ function snoozeTimer(minutes = 5) {
         newAlarm = gCurrentAlarmTime;
     }
     newAlarm.setMinutes(newAlarm.getMinutes() + minutes);
+    gRemainingTime += minutes * 60 * 1000 //Convert to ms
     displayTime(newAlarm);
 }
 
@@ -287,7 +294,6 @@ function pauseResumeTimer() {
     if (pauseResumeButton.innerHTML == "Pause") {
         gCurrentAlarmTime = (new Date()) + gRemainingTime;
     }
-
 }
 
 
