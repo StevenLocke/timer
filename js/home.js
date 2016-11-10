@@ -67,6 +67,7 @@ window.addEventListener('load', function() {
     });
 });
 
+
 function clearInputs() {
     var relative = document.getElementById('relativeInputField');
     var exact = document.getElementById('exactInputField');
@@ -74,6 +75,7 @@ function clearInputs() {
     relative.value = "";
     exact.value = "";
 }
+
 
 function startRelativeTimer() {
     var input = document.getElementById('relativeInputField').value;
@@ -121,7 +123,9 @@ function startRelativeTimer() {
             'and x:y as x minutes and y seconds.');
 }
 
+
 function startExactTimer() {
+
 
     function parseTime(input) {
         // parse a time in hh:mm:ss format
@@ -150,6 +154,7 @@ function startExactTimer() {
     else
         console.log("Error parsing input for exact.");
 }
+
 
 function displayTime(dateTime) {
     document.getElementById('inputDiv').style.display = 'none';
@@ -201,6 +206,10 @@ function displayTime(dateTime) {
                 now.setSeconds(now.getSeconds() + 1);
             }
             else {
+                document.getElementById('timerSpan').innerHTML = "Time's Up!";
+				document.getElementById("stopCol").className = "col-sm-6";
+				document.getElementById("snoozeCol").className = "col-sm-6";
+				document.getElementById("pauseCol").style.display = 'none';
                 if (message.value != "") {
                     document.title = message.value;
                 }
@@ -232,6 +241,7 @@ function displayTime(dateTime) {
     }, 1000);
 }
 
+
 function resetTimer() {
     clearInterval(gTimer);
     gPaused = false;
@@ -242,10 +252,15 @@ function resetTimer() {
     var message = document.getElementById('alertMessage');
     message.value = "";
 
+    document.getElementById("stopCol").className = "col-sm-4";
+    document.getElementById("snoozeCol").className = "col-sm-4";
+    document.getElementById("pauseCol").style.display = 'block';
+
     document.title = "Timer!";
     document.getElementById('inputDiv').style.display = 'block';
     document.getElementById('waitingDiv').style.display = 'none';
 }
+
 
 function snoozeTimer(minutes = 5) {
     clearInterval(gTimer);
@@ -260,7 +275,12 @@ function snoozeTimer(minutes = 5) {
     displayTime(newAlarm);
 }
 
+
 function pauseResumeTimer() {
+	if (gRemainingTime == 0)
+	{
+		return;
+	}
     gPaused = !gPaused;
     var pauseResumeButton = document.getElementById('pauseResumeButton');
     pauseResumeButton.innerHTML = pauseResumeButton.innerHTML == "Pause" ? "Resume" : "Pause";
@@ -270,16 +290,19 @@ function pauseResumeTimer() {
 
 }
 
+
 function playAudio(id) {
     var sound = document.getElementById(id);
     sound.play();
 }
+
 
 function stopAudio(id) {
     var sound = document.getElementById(id);
     sound.pause();
     sound.currentTime = 0;
 }
+
 
 function padZeroes(value) {
     if (value < 10)
