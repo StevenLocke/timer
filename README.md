@@ -1,4 +1,5 @@
 # timer
 Simple javascript web timer
 
-Now hosted! http://stevenlocke.xyz/
+Live at:
+https://stevenlocke.github.io/timer/
